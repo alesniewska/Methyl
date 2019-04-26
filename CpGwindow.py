@@ -14,22 +14,22 @@ Result.write(header)
 def Cproc(seq):
 	count = 0
 	for i in seq:
-		if i=='C':
+		if i == 'C':
 			count = count + 1
 	return float(count*100/len(seq))
 
 def Gproc(seq):
 	count = 0
 	for i in seq:
-		if i=='G':
+		if i == 'G':
 			count = count + 1
 	return float(count*100/len(seq))
 
 def CGcount(seq):
-	count=0
+	count = 0 
 	for i in range(0,len(seq)-1):
-		if seq[i]=='C' and seq[i+1]=='G':
-			count = count+1
+		if seq[i] == 'C' and seq[i+1] == 'G':
+			count = count + 1
 	return float(count)
 
 def CGproc(seq):
@@ -38,17 +38,17 @@ def CGproc(seq):
 	return float(Cpro + Gpro)
 
 def Ccount(seq):
-	count=0	
+	count = 0	
 	for i in seq:
 		if i == 'C':
-			count=count+1
+			count = count + 1
 	return float(count)
 
 def Gcount(seq):
-	count=0	
+	count = 0	
 	for i in seq:
 		if i == 'G':
-			count=count+1
+			count = count + 1
 	return float(count)
 
 def CGtopattern(seq):
@@ -60,7 +60,7 @@ def CGtopattern(seq):
 		return round(float(CG/expect),2)
 
 def check(seq):
-	if CGproc(seq)>50 and CGtopattern(seq)>0.6:
+	if CGproc(seq) >= 50 and CGtopattern(seq) >= 0.6:
 		return True
 
 
@@ -71,9 +71,9 @@ def CpGwindow(seq,window,ID,start,end,strand):
 	if(strand == '-'):
 		seq = seq[::-1] # change direction to 5' -> 3'
 	for i in range(0,len(seq)-window):
-		if start==0: start = i
+		if start == 0: start = i
 		if(check(seq[i:i+window])):
-			end = i+window
+			end = i + window
 		else:
 			if(end!=0):	
 				island.append([start,end])
@@ -81,7 +81,7 @@ def CpGwindow(seq,window,ID,start,end,strand):
 			end = 0
 
 	for i in island:
-		if(i[1]-i[0]>200):
+		if(i[1]-i[0] >= 200):
 			Result.write('{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}'.format(ID, i[0]+1+start,i[1]+1+end,strand,CGproc(seq[i[0]:i[1]]),CGtopattern(seq[i[0]:i[1]]),i[1]-i[0],'\n'))
 			
 	
