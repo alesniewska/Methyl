@@ -82,21 +82,24 @@ def CpGwindow(seq,window,ID,start,end,strand):
 
 	for i in island:
 		if(i[1]-i[0]>200):
-			Result.write('{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}'.format(ID, i[0],i[1],strand,CGproc(seq[i[0]:i[1]]),CGtopattern(seq[i[0]:i[1]]),i[1]-i[0],'\n'))
+			Result.write('{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}'.format(ID, i[0]+1+start,i[1]+1+end,strand,CGproc(seq[i[0]:i[1]]),CGtopattern(seq[i[0]:i[1]]),i[1]-i[0],'\n'))
 			
 	
 
 for seq_record in SeqIO.parse(Input_file, "fasta"):
-
+	
 	seq = seq_record.seq
 	ID = seq_record.id
 	desc=seq_record.description
-	start = desc.find('start:')
-	end = desc.find('end')
-	strand = desc.find('strand')
-	start= desc[start+6:end-1]
-	end= desc[end+4:strand-1]
-	strand = desc[strand+7:strand+8]
+	desc = desc.strip()
+	splitted_desc = desc.split(';')
+	start = splitted_desc[1].split(':')
+	start = start[1].split(':')	
+	end = splitted_desc[2].split(':')
+	end = end[1].split(':')
+	strand = splitted_desc[3].split(':')
+	strand = strand[1].split(':')
+	
 	CpGwindow(seq,100,ID,start,end,strand)
 	
 	
