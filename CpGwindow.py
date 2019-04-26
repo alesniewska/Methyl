@@ -67,7 +67,7 @@ def check(seq):
 def CpGwindow(seq,window,ID,start,end,strand):
 	start = 0
 	end = 0
-	wynik = []
+	island = []
 	if(strand == '-'):
 		seq = seq[::-1] # change direction to 5' -> 3'
 	for i in range(0,len(seq)-window):
@@ -76,11 +76,11 @@ def CpGwindow(seq,window,ID,start,end,strand):
 			end = i+window
 		else:
 			if(end!=0):	
-				wynik.append([start,end])
+				island.append([start,end])
 			start = 0
 			end = 0
 
-	for i in wynik:
+	for i in island:
 		if(i[1]-i[0]>200):
 			Result.write('{}\t{}\t{}\t{}\t{}\t{}\t{}\t{}'.format(ID, i[0],i[1],strand,CGproc(seq[i[0]:i[1]]),CGtopattern(seq[i[0]:i[1]]),i[1]-i[0],'\n'))
 			
