@@ -16,7 +16,7 @@
 6. Use featureCounts that counts mapped reads for genomic features
 		./featureCounts -a ./annotation/exon.gft -o information_about_exons.gtf ~/data_bismark.bam
 		
-7. Use FastaParser script to get fasta file from gtf file
+7. Use FastaParser script to get FASTA file from GTF file
 		python3 FastaParser.py CT_conversion.fasta GA_conversion.fasta CountedReads.fasta 
 
 8. Use CpGwindow.py or CpGdistance.py script to get information about methylated CpG islands
