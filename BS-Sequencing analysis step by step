@@ -20,9 +20,9 @@
 		python3 FastaParser.py CT_conversion.fasta GA_conversion.fasta CountedReads.fasta 
 
 8. Use CpGwindow.py or CpGdistance.py script to get information about methylated CpG islands
-		python3 CpGWindow.py
+		python3 CpGwindow.py example.fasta
 		or
-		python3 CpGdistance.py
+		python3 CpGdistance.py example.fasta
 		
 		
 
