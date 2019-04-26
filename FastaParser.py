@@ -22,7 +22,6 @@ seq = []
 for line in Openfile[1:]:
 
 	line = line.strip()
-	print(line)
 	splitted = line.split('\t')
 	geneID = splitted[0].split(';')
 	start = splitted[2].split(';')
@@ -51,7 +50,7 @@ for line in GA_conversion:
 
 
 for elem in final:
-	info = '>{} start:{} end:{} strand {}{}'.format(elem[0],elem[1],elem[2],elem[3],'\n')
+	info = '>{};start:{};end:{};strand;{}{}'.format(elem[0],elem[1],elem[2],elem[3],'\n')
 	
 	if elem[3] == '-':
 		sequence = GA[int(elem[1]):int(elem[2])]
