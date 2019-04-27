@@ -101,7 +101,9 @@ for seq_record in SeqIO.parse(Input_file, "fasta"):
 	strand = strand[1].split(':')
 	strand = ''.join(strand)
 	ID = ''.join(ID)
+	start = ''.join(start)
+	end = ''.join(end)
 	
-	CpGwindow(seq,100,ID,start,end,strand)
+	CpGwindow(seq,100,ID,int(start),int(end),strand)
 	
 	
