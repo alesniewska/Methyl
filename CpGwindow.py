@@ -89,16 +89,18 @@ def CpGwindow(seq,window,ID,start,end,strand):
 for seq_record in SeqIO.parse(Input_file, "fasta"):
 	
 	seq = seq_record.seq
-	ID = seq_record.id
 	desc=seq_record.description
 	desc = desc.strip()
 	splitted_desc = desc.split(';')
+	ID = splitted_desc[0].split(':')
 	start = splitted_desc[1].split(':')
 	start = start[1].split(':')	
 	end = splitted_desc[2].split(':')
 	end = end[1].split(':')
 	strand = splitted_desc[3].split(':')
 	strand = strand[1].split(':')
+	strand = ''.join(strand)
+	ID = ''.join(ID)
 	
 	CpGwindow(seq,100,ID,start,end,strand)
 	
