@@ -14,10 +14,10 @@
 		 awk -F"\t" '$3=="exon" {print $1"\t"$2"\t"$3"\t"$4"\t"$5" \t"$6"\t"$7"\t"$8"\t"$9'}  >exon.gft gh19.gtf
 		 	
 6. Use featureCounts that counts mapped reads for genomic features
-		./featureCounts -a ./annotation/exon.gft -o information_about_exons.gtf ~/data_bismark.bam
+		./featureCounts -a ./annotation/exon.gft -o CountedReads.gtf ~/data_bismark.bam
 		
 7. Use FastaParser script to get FASTA file from GTF file
-		python3 FastaParser.py CT_conversion.fasta GA_conversion.fasta CountedReads.fasta 
+		python3 FastaParser.py CT_conversion.fasta GA_conversion.fasta CountedReads.gtf
 
 8. Use CpGwindow.py or CpGdistance.py script to get information about methylated CpG islands
 		python3 CpGwindow.py example.fasta
