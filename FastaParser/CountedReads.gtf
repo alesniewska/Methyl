@@ -1,6 +1,0 @@
-Geneid	Chr	Start	End	Strand	
-XM_011541469.1	first_example;first_example;first_example;first_example	30;50;60;150	100;190;300;350	-;-;-;-
-XM_011541467.1	first_example;first_example;first_example	100;140;400	150;203;490	+;+;+
-XM_017001276.1	first_example;first_example;first_example;first_example;first_example;first_example	23;56;90;120;150;170	50;80;130;190;204;300	-;-;-;-;-;-
-XM_011541465.2	second_example;second_example;second_example;second_example	50;80;130;200	90;130;203;302	+;+;+;+
-NR_075077.1	second_example;second_example;second_example;second_example;second_example	60;120;140;178;204	102;150;190;230;302	-;-;-;-;-
