@@ -1,30 +1,39 @@
 1. Check quality of reads by FastQc
-		fastqc data.fastq
+		fastqc data_1.fastq
+		fastqc data_2.fastq
+
+2. Use Trim Galore to improve quality of reads
+		trim_galore --fastqc --paired data_1.fastq data_2.fastq
 		
-2. Use TrimGalore to improve quality of reads
-		perl trim_galore data.fastq 
+3. Check quality of reads by FastQc after Trim Galore
+		fastqc data_1.fastq
+		fastqc fata_2.fastq
 		
 3. Prepare genom to alignment with BS-sequencing reads
 		bismark_genome_preparation --path_to_bowtie /usr/bin/bowtie2/ --verbose /data/genomes/homo_sapiens/genom/
 		
 4. Alignment reads to genome
-	bismark --genome /data/genomes/homo_sapiens/genom/ data.fastq
+	bismark --path_to_bowtie /usr/bin/bowtie2/ --multicore 4 --genome /data/genomes/homo_sapiens/genom/ -1 data_1.fastq -2 data_2.fastq
 
-5. Download genom adnotation and select information only about exons
-		 awk -F"\t" '$3=="exon" {print $1"\t"$2"\t"$3"\t"$4"\t"$5" \t"$6"\t"$7"\t"$8"\t"$9'}  >exon.gft gh19.gtf
-		 	
-6. Use featureCounts that counts mapped reads for genomic features
-		./featureCounts -a ./annotation/exon.gft -o CountedReads.gtf ~/data_bismark.bam
-		
-7. Use FastaParser script to get FASTA file from GTF file
-		python3 FastaParser.py CT_conversion.fasta GA_conversion.fasta CountedReads.gtf
+5. Running deduplicate_bismark
+	~/bismark/deduplicate_bismark --bam --paired  data.bam
+	
+6. Running bismark Methylation Extractor
+~/bismark/bismark_methylation_extractor --samtools_path /usr/bin/samtools/ --paired-end --no_overlap --zero_based --ignore_r2 2 --remove_spaces 
+--bedGraph --cytosine_report --buffer_size 10G --gzip --genome_folder /data/genomes/homo_sapiens/genom/ data.bam
 
-8. Use CpGwindow.py or CpGdistance.py script to get information about methylated CpG islands
-		python3 CpGwindow.py example.fasta
-		or
-		python3 CpGdistance.py example.fasta
-		
-		
+8. Running CpGIslandFinder.py to get folder with CpG islands
+	python3 ~/Python_script/CpGIslandFinder.py  /data/genomes/homo_sapiens/genom/hg19.fa
+
+9. Running CpGisnalds_annotation.py to get annotation of CpG islands
+	python3 ~/Python_script/CpGisnalds_annotation.py CpGislands.txt /data/genomes/homo_sapiens/genom_annotation/hg19.gtf
+
+10. Running CpGisland_methylation_extractor.py to get the percentage of methylation of each CpG island 
+	python3 ~/Python_script/CpG_methyl.py CpGislands_annotation.txt data.deduplicated.bedGraph 
+	/data/genomes/homo_sapiens/genom/hg19.fa
+
+
+
 
 
 
