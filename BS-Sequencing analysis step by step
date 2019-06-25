@@ -1,16 +1,16 @@
 1. Check quality of reads by FastQc
-		fastqc data_1.fastq
-		fastqc data_2.fastq
+	fastqc data_1.fastq
+	fastqc data_2.fastq
 
 2. Use Trim Galore to improve quality of reads
-		trim_galore --fastqc --paired data_1.fastq data_2.fastq
+	trim_galore --fastqc --paired data_1.fastq data_2.fastq
 		
 3. Check quality of reads by FastQc after Trim Galore
-		fastqc data_1.fastq
-		fastqc fata_2.fastq
+	fastqc data_1.fastq
+	fastqc fata_2.fastq
 		
 3. Prepare genom to alignment with BS-sequencing reads
-		bismark_genome_preparation --path_to_bowtie /usr/bin/bowtie2/ --verbose /data/genomes/homo_sapiens/genom/
+	bismark_genome_preparation --path_to_bowtie /usr/bin/bowtie2/ --verbose /data/genomes/homo_sapiens/genom/
 		
 4. Alignment reads to genome
 	bismark --path_to_bowtie /usr/bin/bowtie2/ --multicore 4 --genome /data/genomes/homo_sapiens/genom/ -1 data_1.fastq -2 data_2.fastq
@@ -19,8 +19,8 @@
 	~/bismark/deduplicate_bismark --bam --paired  data.bam
 	
 6. Running bismark Methylation Extractor
-~/bismark/bismark_methylation_extractor --samtools_path /usr/bin/samtools/ --paired-end --no_overlap --zero_based --ignore_r2 2 --remove_spaces 
---bedGraph --cytosine_report --buffer_size 10G --gzip --genome_folder /data/genomes/homo_sapiens/genom/ data.bam
+	~/bismark/bismark_methylation_extractor --samtools_path /usr/bin/samtools/ --paired-end --no_overlap --zero_based --ignore_r2 2 --remove_spaces 
+	--bedGraph --cytosine_report --buffer_size 10G --gzip --genome_folder /data/genomes/homo_sapiens/genom/ data.bam
 
 8. Running CpGIslandFinder.py to get folder with CpG islands
 	python3 ~/Python_script/CpGIslandFinder.py  /data/genomes/homo_sapiens/genom/hg19.fa
