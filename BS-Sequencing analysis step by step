@@ -26,11 +26,11 @@
 	python3 ~/Python_script/CpGIslandFinder.py  /data/genomes/homo_sapiens/genom/hg19.fa
 
 9. Running CpGisland_methylation_extractor.py to get the percentage of methylation of each CpG island 
-	python3 ~/Python_script/CpG_methyl.py CpGislands_annotation.txt data.deduplicated.bedGraph 
+	python3 ~/Python_script/CpG_methyl.py CpGislands.gtf data.deduplicated.bedGraph 
 	/data/genomes/homo_sapiens/genom/hg19.fa
 	
 10. Running CpGisnalds_annotation.py to get annotation of CpG islands
-	python3 ~/Python_script/CpGisnalds_annotation.py CpGislands.txt /data/genomes/homo_sapiens/genom_annotation/hg19.gtf
+	python3 ~/Python_script/CpGisnalds_annotation.py CpGislands.gtf /data/genomes/homo_sapiens/genom_annotation/hg19.gtf
 
 
 
