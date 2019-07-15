@@ -22,18 +22,24 @@
 	~/bismark/bismark_methylation_extractor --samtools_path /usr/bin/samtools/ --paired-end --no_overlap --zero_based --ignore_r2 2 --remove_spaces 
 	--bedGraph --cytosine_report --buffer_size 10G --gzip --genome_folder /data/genomes/homo_sapiens/genom/ data.bam
 
-8. Running CpGIslandFinder.py to get folder with CpG islands
+8. Running CpGIslandFinder.py to get GTF file with CpGislands
 	python3 ~/Python_script/CpGIslandFinder.py  /data/genomes/homo_sapiens/genom/hg19.fa
 
-9. Running CpGisland_methylation_extractor.py to get the percentage of methylation of each CpG island 
-	python3 ~/Python_script/CpG_methyl.py CpGislands.gtf data.deduplicated.bedGraph 
-	/data/genomes/homo_sapiens/genom/hg19.fa
+
+9. Change CpGislands.GTF file to CpGislands.bed file 
+	awk '{ print $2"\t"$4"\t"$5"\tCpGisland\t.\t"$7"\n"}' CpGislands.gtf > CpGislands.bed
 	
-10. Running CpGisnalds_annotation.py to get annotation of CpG islands
-	python3 ~/Python_script/CpGisnalds_annotation.py CpGislands.gtf /data/genomes/homo_sapiens/genom_annotation/hg19.gtf
+10. Add percentage of methylation:
+	bedtools2/bin/intersectBed -a CpGisland.bed -b SRR6806743.deduplicated.bedGraph -wa -wb | 
+	bedtools2/bin/groupBy -i - -g 1-3 -c 10,10 -o count,mean > CpGisland_met.bed
+
+11. Add annotation: 
+	bedtools2/bin/intersectBed -a CpGisland_met.bed -b hg19.bed -wa -wb | 
+	awk -v OFS="\t" '{print $1,$2,$3,$5,$9,$11}' > CpGisland_annotation.gtf
 
 
 
+	
 
 
 
