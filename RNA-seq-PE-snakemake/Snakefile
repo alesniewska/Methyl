@@ -1,0 +1,56 @@
+import glob
+import os
+
+DIR = "/home/plgrid/plgkraszewska/RNA_PE/"
+SAMPLE_PATH = DIR +"sample_rna/"
+GENOME_PATH = DIR + "genome/GRCh37_75.fa"
+GENOME_ANNOTATION_PATH = DIR + "genome_ann/GRCh37.75.gtf"
+SAMPLES, = glob_wildcards(SAMPLE_PATH + "{sample}_1.fastq")
+
+rule all:
+	input: expand(DIR + "analysis/{sample}.cnt", sample = SAMPLES)
+
+rule trim_galore:
+  input:  SAMPLE_PATH + "{sample}_1.fastq", SAMPLE_PATH + "{sample}_2.fastq"
+  output: DIR + "trimmed/{sample}_1_val_1.fq", DIR + "trimmed/{sample}_2_val_2.fq"
+  shell: "trim_galore --paired {input} -o trimmed/"
+
+rule start_index:
+  input: genome = GENOME_PATH, genome_ann = GENOME_ANNOTATION_PATH
+  output: directory(DIR + "STAR_index/")
+  shell: "STAR --runMode genomeGenerate --runThreadN 12 --genomeDir {output} --genomeFastaFiles {input.genome} --sjdbGTFfile {input.genome_ann} --sjdbOverhang 75"
+
+rule star:
+	input: sample1 = DIR + "trimmed/{sample}_1_val_1.fq", sample2 = DIR + "trimmed/{sample}_2_val_2.fq", star_genome = DIR + "STAR_index/"
+  output: map = DIR + "{sample}_Aligned.out.bam",
+                log1 = DIR + "{sample}_Log.out",
+                log2 = DIR + "{sample}_Log.progress.out",
+                log3 = DIR + "{sample}_Log.final.out",
+                log4 = DIR + "{sample}_SJ.out.tab"
+	shell: "STAR --runMode alignReads --outSAMtype BAM Unsorted --outFileNamePrefix {wildcards.sample}_ --genomeDir {input.star_genome} --readFilesIn {input.sample1} {input.sample2}"
+
+rule clean:
+  input:  map = DIR + "{sample}_Aligned.out.bam",
+                log1 = DIR + "{sample}_Log.out",
+                log2 = DIR + "{sample}_Log.progress.out",
+                log3 = DIR + "{sample}_Log.final.out",
+                log4 = DIR + "{sample}_SJ.out.tab",
+  output: map = DIR + "mapped/{sample}_Aligned.out.bam",
+                log1 = DIR + "star_log/{sample}_Log.out",
+                log2 = DIR + "star_log/{sample}_Log.progress.out",
+                log3 = DIR + "star_log/{sample}_Log.final.out",
+                log4 = DIR + "star_log/{sample}_SJ.out.tab"
+	shell: "mv  {wildcards.sample}_Aligned.out.bam mapped/ \n"
+         "mv {wildcards.sample}_Log.out {wildcards.sample}_Log.progress.out {wildcards.sample}_Log.final.out {wildcards.sample}_SJ.out.tab star_log/ \n"
+
+
+rule samtools_sort:
+  input: DIR + "mapped/{sample}_Aligned.out.bam"
+  output: DIR + "sorted/{sample}.sorted.bam"
+  shell: "samtools sort -T sorted/{wildcards.sample}  -O bam {input} > {output}"
+
+rule fc:
+	input: samples = DIR + "sorted/{sample}.sorted.bam", genome_ann = GENOME_ANNOTATION_PATH
+  output: DIR + "analysis/{sample}.cnt"
+  shell: "featureCounts -M -s 2 -T 24 -t gene -g gene_id -a {input.genome_ann} -o {output} {input.samples}"
+
