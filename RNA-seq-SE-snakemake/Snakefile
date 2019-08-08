@@ -4,7 +4,7 @@ import os
 DIR = "/home/plgrid/plgkraszewska/RNA/"
 SAMPLE_PATH = DIR +"sample_rna/"
 GENOME_PATH = DIR + "genome/GRCh37_75.fa"
-GENOME_ANNOTATION = DIR + "genome_ann/GRCh37.75.gtf"
+GENOME_ANNOTATION_PATH = DIR + "genome_ann/GRCh37.75.gtf"
 SAMPLES, = glob_wildcards(SAMPLE_PATH + "{sample}.fastq")
 
 
@@ -17,7 +17,7 @@ rule trim_galore:
 	shell: "trim_galore -o trimmed/ {input}"
 
 rule start_index:
-  input: genome = GENOME_PATH, genome_ann = GENOME_ANNOTATION
+  input: genome = GENOME_PATH, genome_ann = GENOME_ANNOTATION_PATH
   output: directory(DIR + "STAR_index/")
   shell: "STAR --runMode genomeGenerate --runThreadN 12 --genomeDir {output} --genomeFastaFiles {input.genome} --sjdbGTFfile {input.genome_ann} --sjdbOverhang 75"
 
@@ -38,6 +38,6 @@ rule samtools_sort:
   shell: "samtools sort -T sorted/{wildcards.sample}  -O bam {input} > {output}"
 
 rule fc:
-	input: samples = DIR + "sorted/{sample}.sorted.bam", genome_ann = GENOME_ANNOTATION
+	input: samples = DIR + "sorted/{sample}.sorted.bam", genome_ann = GENOME_ANNOTATION_PATH
   output: DIR + "analysis/{sample}.cnt"
   shell: "featureCounts -M -s 2 -T 24 -t gene -g gene_id -a {input.genome_ann} -o {output} {input.samples}"
