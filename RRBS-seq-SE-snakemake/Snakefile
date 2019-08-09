@@ -1,0 +1,106 @@
+
+import glob
+import os
+
+DIR = "/home/plgrid/plgkraszewska/BS/"
+SAMPLE_DIR = DIR + "sample_met/"
+GENOME_DIR = DIR + "genome/"
+GENOME_ANNOTATION_PATH = DIR + "genome_ann/GRCh37.75.gtf"
+
+
+SAMPLES, = glob_wildcards(SAMPLE_DIR + "{sample}.fastq")
+
+rule all: 
+	input: GENOME_DIR + "Bisulfite_Genome", expand(DIR + "result/{sample}_methylation.cnt", sample=SAMPLES)
+
+
+rule trim: 
+	input: DIR + "sample_met/{sample}.fastq"
+	output: DIR + "trimmed/{sample}_trimmed.fq"
+	shell: "trim_galore --rrbs -o trimmed/ {input}"
+
+rule CpGisland_finder:
+	input: GENOME_DIR + "GRCh37_75.fa"
+	output: DIR + "CpGislands.gtf"
+	shell: "python CpGIslandFinder.py {input} > {output}"
+
+rule gtf_to_bed:
+	input: DIR + "CpGislands.gtf"
+	output: DIR + "CpGislands.bed"
+	shell: """
+		 awk -F "\\t" '{{OFS="\\t"; print $2, $4, $5, "CpGisland", $6, $7}}' {input} > {output}
+	       """
+         
+rule genome_prep:
+	input: GENOME_DIR
+	output: GENOME_DIR + "Bisulfite_Genome"
+	shell: "bismark_genome_preparation --verbose {input}"	
+
+rule alig:
+	input: sample = DIR + "trimmed/{sample}_trimmed.fq",
+	       genome = GENOME_DIR
+	output: DIR + "{sample}_trimmed_bismark_bt2.bam", DIR + "{sample}_trimmed_bismark_bt2_SE_report.txt"
+	shell: "bismark --genome {input.genome} {input.sample}"
+
+rule clean:
+	input: DIR + "{sample}_trimmed_bismark_bt2_SE_report.txt", DIR + "{sample}_trimmed_bismark_bt2.bam"
+	output: DIR + "BAMs/{sample}_trimmed_bismark_bt2_SE_report.txt", DIR + "BAMs/{sample}_trimmed_bismark_bt2.bam"
+	shell: "mv {input} BAMs/"
+
+rule methyl_ex:
+	input: sample = DIR + "BAMs/{sample}_trimmed_bismark_bt2.bam", genome = GENOME_DIR
+	output: DIR + "methyl/{sample}_trimmed_bismark_bt2.bedGraph.gz", DIR + "methyl/{sample}_trimmed_bismark_bt2.CpG_report.txt"
+	shell: "bismark_methylation_extractor -single-end --zero_based --remove_spaces --bedGraph --cytosine_report --buffer_size 10G --genome_folder {input.genome} -o methyl/ {input.sample}"
+
+rule gunzip:
+	input: DIR + "methyl/{sample}_trimmed_bismark_bt2.bedGraph.gz"
+	output: DIR + "methyl/{sample}_trimmed_bismark_bt2.bedGraph"
+	shell: "gunzip {input}"
+
+rule report_to_bed:
+	input: DIR + "methyl/{sample}_trimmed_bismark_bt2.CpG_report.txt"
+	output: temp(DIR + "result/{sample}_report.bed")
+	shell: """
+         awk -F "\\t" '{{OFS="\\t"; print $1, $2, $2+1, "Cp", ".", $3}}' {input} > {output}
+         """
+
+rule add_strand:
+	input: methyl = DIR + "methyl/{sample}_trimmed_bismark_bt2.bedGraph", report = DIR + "result/{sample}_report.bed"
+	output: temp(DIR + "result/{sample}_strand_methyl.txt")
+	shell: "intersectBed -a {input.methyl} -b {input.report} -wa -wb  > {output}"
+
+rule strand_methyl_to_bed:
+	input: DIR + "result/{sample}_strand_methyl.txt"
+	output: temp(DIR + "result/{sample}_strand_methyl.bed")
+	shell: """
+         awk -F "\\t" '{{OFS="\\t"; print $1,$2,$3,"CpG",$4,$10}}' {input} > {output}
+         """
+
+rule add_methyl:
+  input: islands = DIR + "CpGislands.bed", methyl = DIR + "result/{sample}_strand_methyl.bed"
+  output: temp(DIR + "result/{sample}_methylation.txt")
+  shell: "intersectBed -a {input.islands} -b {input.methyl} -wa -wb -s | groupBy -i - -g 1,2,3,5,6 -c 11 -o sum > {output}"
+
+rule methyl_count:
+  input: DIR + "result/{sample}_methylation.txt"
+  output: temp(DIR + "result/{sample}_methylation_count.bed")
+  shell: """
+         awk -F "\\t" '{{OFS="\\t"; print "chr"$1,$2,$3,"CpGisland",$6/$4,$5}}' {input} > {output}
+         """
+
+rule metylation_with_annotation:
+  input: methyl = DIR + "result/{sample}_methylation_count.bed", annotation = DIR + "genome_ann_bed/GRCh37.bed"
+  output: temp(DIR + "result/{sample}_met_ann_result.txt")
+  shell: "intersectBed -a {input.methyl} -b {input.annotation} -wa -wb -s > {output}"
+
+rule result:
+  input: DIR + "result/{sample}_met_ann_result.txt"
+  output: temp(DIR + "result/{sample}_met_ann_result_cleaned.txt")
+  shell: """
+         awk -F "\\t" '{{OFS="\\t"; print $10,$1,$2,$3,$6,$3-$2,$5}}' {input}  > {output}
+         """
+         
+rule add_header:
+  input: DIR + "result/{sample}_met_ann_result_cleaned.txt"
+  output: DIR + "result/{sample}_methylation.cnt"
+  shell: "python add_header.py {input} {wildcards.sample} {output}"
