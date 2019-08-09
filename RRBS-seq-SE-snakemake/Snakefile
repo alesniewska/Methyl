@@ -22,7 +22,7 @@ rule trim:
 rule CpGisland_finder:
 	input: GENOME_DIR + "GRCh37_75.fa"
 	output: DIR + "CpGislands.gtf"
-	shell: "python CpGIslandFinder.py {input} > {output}"
+	shell: "python CpGislandsFind.py {input} > {output}"
 
 rule gtf_to_bed:
 	input: DIR + "CpGislands.gtf"
@@ -81,19 +81,19 @@ rule add_methyl:
   output: temp(DIR + "result/{sample}_methylation.txt")
   shell: "intersectBed -a {input.islands} -b {input.methyl} -wa -wb -s | groupBy -i - -g 1,2,3,5,6 -c 11 -o sum > {output}"
 
-rule methyl_count:
+rule methylation_to_bed:
   input: DIR + "result/{sample}_methylation.txt"
   output: temp(DIR + "result/{sample}_methylation_count.bed")
   shell: """
          awk -F "\\t" '{{OFS="\\t"; print "chr"$1,$2,$3,"CpGisland",$6/$4,$5}}' {input} > {output}
          """
 
-rule metylation_with_annotation:
+rule add_annotation:
   input: methyl = DIR + "result/{sample}_methylation_count.bed", annotation = DIR + "genome_ann_bed/GRCh37.bed"
   output: temp(DIR + "result/{sample}_met_ann_result.txt")
   shell: "intersectBed -a {input.methyl} -b {input.annotation} -wa -wb -s > {output}"
 
-rule result:
+rule clean_result:
   input: DIR + "result/{sample}_met_ann_result.txt"
   output: temp(DIR + "result/{sample}_met_ann_result_cleaned.txt")
   shell: """
