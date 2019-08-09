@@ -3,7 +3,7 @@ import statistics
 from statistics import median
 import argparse
 
-parser = argparse.ArgumentParser(description='''CpGIslandFinder is a program to find CpG island HOW TO USE: python3 CpGIslandFinder.py <path to FASTA file> <optional arguments>  ''')
+parser = argparse.ArgumentParser(description='''CpGislandFind is a program to find CpG island HOW TO USE: python3 CpGislandFind.py <path to FASTA file> <optional arguments>  ''')
 parser.add_argument("fasta_file", help='path to FASTA file')
 parser.add_argument('-min_island_length', type=int, default=500, help='Minimal island length, default is 500 (int type)')
 parser.add_argument('-obs_to_exp', type=float, default=0.6, help='Obs/Exp value, default is 0.6 (float type)')
