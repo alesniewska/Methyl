@@ -49,7 +49,7 @@ rule clean:
 rule methyl_ex:
 	input: sample = DIR + "BAMs/{sample}_trimmed_bismark_bt2.bam", genome = GENOME_DIR
 	output: DIR + "methyl/{sample}_trimmed_bismark_bt2.bedGraph.gz", DIR + "methyl/{sample}_trimmed_bismark_bt2.CpG_report.txt"
-	shell: "bismark_methylation_extractor -single-end --zero_based --remove_spaces --bedGraph --cytosine_report --buffer_size 10G --genome_folder {input.genome} -o methyl/ {input.sample}"
+	shell: "bismark_methylation_extractor -single-end --zero_based --remove_spaces --bedGraph --ignore_r2 2 --cytosine_report --buffer_size 10G --genome_folder {input.genome} -o methyl/ {input.sample}"
 
 rule gunzip:
 	input: DIR + "methyl/{sample}_trimmed_bismark_bt2.bedGraph.gz"
