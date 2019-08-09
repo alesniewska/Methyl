@@ -13,7 +13,7 @@ rule all:
 	input: GENOME_DIR + "Bisulfite_Genome", expand(DIR + "result/{sample}_methylation.cnt", sample=SAMPLES)
 
 rule trim: 
-	input: DIR2 + "sample_bs/{sample}_1.fastq", DIR2 + "sample_bs/{sample}_2.fastq"
+	input: DIR + "sample_bs/{sample}_1.fastq", DIR + "sample_bs/{sample}_2.fastq"
 	output: sample1 = "trimmed/{sample}_1_val_1.fq", sample2 = "trimmed/{sample}_2_val_2.fq"
 	shell: "trim_galore --rrbs --paired -o trimmed/ {input} 2> trim.log"
 
@@ -36,17 +36,17 @@ rule genome_prep:
 
 rule alig:
 	input: sample1 = "trimmed/{sample}_1_val_1.fq", sample2 = "trimmed/{sample}_2_val_2.fq", genome = GENOME_DIR
-	output: DIR2 + "{sample}_1_val_1_bismark_bt2_pe.bam", DIR2 + "{sample}_1_val_1_bismark_bt2_PE_report.txt"
+	output: DIR + "{sample}_1_val_1_bismark_bt2_pe.bam", DIR + "{sample}_1_val_1_bismark_bt2_PE_report.txt"
 	shell: "bismark --genome {input.genome} -1 {input.sample1} -2 {input.sample2} 2> alig.log"
 
 rule clean:
-	input: DIR2 + "{sample}_1_val_1_bismark_bt2_PE_report.txt", DIR2 + "{sample}_1_val_1_bismark_bt2_pe.bam"
-  output: DIR2 + "BAMs/{sample}_1_val_1_bismark_bt2_SE_report.txt", DIR2 + "BAMs/{sample}_1_val_1_bismark_bt2.bam"
+	input: DIR + "{sample}_1_val_1_bismark_bt2_PE_report.txt", DIR + "{sample}_1_val_1_bismark_bt2_pe.bam"
+  output: DIR + "BAMs/{sample}_1_val_1_bismark_bt2_SE_report.txt", DIR + "BAMs/{sample}_1_val_1_bismark_bt2.bam"
 	shell: "mv {input} BAMs/"
 
 rule methyl_ex:
-	input: sample = DIR2 + "{sample}_1_val_1_bismark_bt2_pe.bam", genome = GENOME_DIR
-	output: DIR2 + "methyl/{sample}_1_val_1_bismark_bt2_pe.bedGraph.gz"
+	input: sample = DIR + "{sample}_1_val_1_bismark_bt2_pe.bam", genome = GENOME_DIR
+	output: DIR + "methyl/{sample}_1_val_1_bismark_bt2_pe.bedGraph.gz"
 	shell: "bismark_methylation_extractor --paired-end --zero_based --remove_spaces --ignore_r2 2 --bedGraph --cytosine_report --buffer_size 10G --genome_folder {input.genome} -o methyl/ {input.sample} 2> met_ex.log"
 
 rule gunzip:
