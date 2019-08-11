@@ -82,7 +82,7 @@ rule methylation_to_bed:
   input: DIR + "result/{sample}_methylation.txt"
   output: temp(DIR + "result/{sample}_methylation_count.bed")
   shell: """
-         awk -F "\\t" '{{OFS="\\t"; print "chr"$1,$2,$3,"CpGisland",$6/$4,$5}}' {input} > {output}
+         awk -F "\\t" '{{OFS="\\t"; print $1,$2,$3,"CpGisland",$6/$4,$5}}' {input} > {output}
          """
 
 rule add_annotation:
