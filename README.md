@@ -83,6 +83,13 @@ CpGislandFind.py <path to FASTA file> <optional arguments>
 
 ## How does CpGislandsFind work?
 
+1. Find distance between CpG in sequence and calculate median of distances
+2. If distance between CpG is shorter than calculated median distance add CpG to pre-island
+3. Select pre-island which is biggest or equal than minimal CpGisland length 
+4. If sum of C% and G% is biggest than minimal value and Obs/Exp is biggest than minimal value write CpGisland.
+
+![alt text](https://raw.githubusercontent.com/alesniewska/Methyl/master/images/obs_exp.jpg?token=AJMQADD5VIOPFDV42N5CCEC5LLF6S)
+
 
 
 
