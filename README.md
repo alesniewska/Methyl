@@ -57,23 +57,23 @@ python table_count.py <path to *.cnt files> <output files>
 ```
 
 
-## CpGislandFind
+# CpGislandFind
 
 You can use CpGislandFind python script to find CpGislands in any DNA sequence in fasta format. 
 
-# Running CpGislandFind
+## Running CpGislandFind
 
 ```
 CpGislandFind.py <path to FASTA file> <optional arguments>
 ```
-# Arguments
+## Arguments
 * Fasta file with DNA sequence
 * minimal CpGisland length; default 500
 * minimal Obs to Exp value; default 0.6
 * minimal sum of C percentage and G percentage in island; default 50
 
 
-# How does CpGislandFind work?
+## How does CpGislandFind work?
 
 
 
