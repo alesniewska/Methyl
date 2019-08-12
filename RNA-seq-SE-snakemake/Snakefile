@@ -1,12 +1,13 @@
 import glob
 import os
 
+#---------------add-your-path-------------------
 DIR = "/home/plgrid/plgkraszewska/RNA/"
 SAMPLE_PATH = DIR +"sample_rna/"
 GENOME_PATH = DIR + "genome/GRCh37_75.fa"
 GENOME_ANNOTATION_PATH = DIR + "genome_ann/GRCh37.75.gtf"
 SAMPLES, = glob_wildcards(SAMPLE_PATH + "{sample}.fastq")
-
+#-----------------------------------------------
 
 rule all:
 	input: expand(DIR + "analysis/{sample}.cnt", sample = SAMPLES)
