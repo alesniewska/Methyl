@@ -47,7 +47,7 @@ sbatch snakemake.sbatch
 
 ## RNA-seq-snamemake pipeline schema
 
-[](https://raw.githubusercontent.com/alesniewska/Methyl/master/images/rna_shema.jpg?token=AJMQADDHKM6ZFW6B62SZGY25LKL4G)
+![alt text](https://raw.githubusercontent.com/alesniewska/Methyl/master/images/rna_shema.jpg?token=AJMQADDHKM6ZFW6B62SZGY25LKL4G)
 
 ## RRBS-seq-snamemake pipeline schema
 
