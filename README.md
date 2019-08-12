@@ -1,4 +1,4 @@
-#RNA-seq and RRBS-seq snakemake pipe
+# RNA-seq and RRBS-seq snakemake pipe
 [Sanakemake](https://bitbucket.org/snakemake/snakemake/src/master/) is a workflow management system which allows to create analysis pipelines.
 Snakemake pipelines were written for analyzing RNA-seq and RRBS-seq data for paired-end and single-end reads 
 Workflows were created to be able to run on a cluster witch [SLURM](https://slurm.schedmd.com/quickstart.html) management system.
@@ -61,7 +61,7 @@ python table_count.py <path to *.cnt files> <output files>
 
 You can use CpGislandFind python script to find CpGislands in any DNA sequence in fasta format. 
 
-#Running CpGislandFind
+# Running CpGislandFind
 
 ```
 CpGislandFind.py <path to FASTA file> <optional arguments>
@@ -73,7 +73,7 @@ CpGislandFind.py <path to FASTA file> <optional arguments>
 * minimal sum of C percentage and G percentage in island; default 50
 
 
-#How does CpGislandFind work?
+# How does CpGislandFind work?
 
 
 
