@@ -1,10 +1,13 @@
 import glob
 import os
 
+#---------------add-your-path-------------------
 DIR = "/home/plgrid/plgkraszewska/BS/"
 SAMPLE_DIR = DIR + "sample_met/"
 GENOME_DIR = DIR + "genome/"
+GENOME_ANN_BED_DIR = DIR + "genome_ann_bed/GRCh37.bed"
 GENOME_ANNOTATION_PATH = DIR + "genome_ann/GRCh37.75.gtf"
+#-----------------------------------------------
 
 
 SAMPLES, = glob_wildcards(SAMPLE_DIR + "{sample}.fastq")
@@ -88,7 +91,7 @@ rule methylation_to_bed:
          """
 
 rule add_annotation:
-  input: methyl = DIR + "result/{sample}_methylation_count.bed", annotation = DIR + "genome_ann_bed/GRCh37.bed"
+  input: methyl = DIR + "result/{sample}_methylation_count.bed", annotation = DIR + GENOME_ANN_BED_DIR
   output: temp(DIR + "result/{sample}_met_ann_result.txt")
   shell: "intersectBed -a {input.methyl} -b {input.annotation} -wa -wb -s > {output}"
 
