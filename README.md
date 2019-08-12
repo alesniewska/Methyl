@@ -1,4 +1,4 @@
-# RNA-seq and RRBS-seq snakemake pipe
+# RNA-seq and RRBS-seq snakemake pipelines
 
 [Sanakemake](https://bitbucket.org/snakemake/snakemake/src/master/) is a workflow management system which allows to create analysis pipelines.
 Snakemake pipelines were written for analyzing RNA-seq and RRBS-seq data for paired-end and single-end reads 
