@@ -2,7 +2,7 @@
 
 [Sanakemake](https://bitbucket.org/snakemake/snakemake/src/master/) is a workflow management system which allows to create analysis pipelines.
 Snakemake pipelines were written for analyzing RNA-seq and RRBS-seq data for paired-end and single-end reads 
-Workflows were created to be able to run on a cluster witch [SLURM](https://slurm.schedmd.com/quickstart.html) management system.
+Workflows were created to be able to run on a cluster with [SLURM](https://slurm.schedmd.com/quickstart.html) management system.
 
 ## Installation
 
@@ -16,15 +16,17 @@ Before running the pipeline, change the paths to the directories in the right pl
 For example:
 
 ```bash
-#---------------add-your-path-------------------
+#---------------change to match your configutation-------------------
 DIR = "/home/plgrid/plgkraszewska/RNA_PE/"
 SAMPLE_PATH = DIR +"sample_rna/"
 GENOME_PATH = DIR + "genome/GRCh37_75.fa"
 GENOME_ANNOTATION_PATH = DIR + "genome_ann/GRCh37.75.gtf"
 SAMPLES, = glob_wildcards(SAMPLE_PATH + "{sample}_1.fastq")
-#-----------------------------------------------
+#--------------------------------------------------------------------
 ```
 You need to load the appropriate modules in the file snakemake.sbatch. 
+
+moduly z jaka wersja
 
 ```bash
 # load all modules
@@ -40,7 +42,7 @@ All system requirements have been saved in the requirements.txt file in the appr
 
 ## Running snakemake pipeline
 
-In the directory that contains all required Python scripts the configured snakemake.sbatch and Snakefile files run:
+Choose the directory that contains all required Python scripts the configured snakemake.sbatch and Snakefile files run:
 ```
 sbatch snakemake.sbatch
 ```
