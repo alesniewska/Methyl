@@ -11,12 +11,12 @@ module load bedtools/2.21.0
 module load bedtools/2.21.0/intersectBed
 module load bedtools/2.21.0/groupBy
 module load trimgalore/0.6.0
-module load fastqc
+module load fastqc/0.11.4
 module load bismark/0.21.0
 module load bismark/0.21.0/bismark_genome_preparation
 module load bismark/0.21.0/bismark_methylation_extractor
-module load samtools
-module load bowtie2
+module load samtools/1.2
+module load bowtie2/2.2.3
 
 # activate virtual environment
 python -m venv venv
