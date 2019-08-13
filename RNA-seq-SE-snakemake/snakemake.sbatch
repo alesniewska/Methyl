@@ -8,10 +8,10 @@
 # load all modules
 module load python/3.7.3
 module load trimgalore/0.6.0
-module load fastqc
-module load star
-module load samtools
-module load subread
+module load fastqc/0.11.4
+module load star/2.5.3a
+module load samtools/1.2
+module load subread/1.5.2
 
 # activate virtual environment
 python -m venv venv
