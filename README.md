@@ -47,11 +47,11 @@ sbatch snakemake.sbatch
 
 ## RNA-seq-snamemake pipeline schema
 
-![alt text](https://raw.githubusercontent.com/alesniewska/Methyl/master/images/rna_shema.jpg?token=AJMQADDHKM6ZFW6B62SZGY25LKL4G)
+![alt text](https://raw.githubusercontent.com/alesniewska/Methyl/master/images/rna_shema.jpg?token=AJMQADGUPBMLKQF7UCAUUGC5NEWUM)
 
 ## RRBS-seq-snamemake pipeline schema
 
-![alt text](https://raw.githubusercontent.com/alesniewska/Methyl/master/images/rrbs-schema.jpg?token=AJMQADA3DRFC7HJZMS7625C5LKO4Y)
+![alt text](https://raw.githubusercontent.com/alesniewska/Methyl/master/images/rrbs-schema.jpg?token=AJMQADGSKTWUJ5JRNMZCU4S5NEWS2)
 
 ## Make table count
 
@@ -87,7 +87,7 @@ CpGislandFind.py <path to FASTA file> <optional arguments>
 3. Select pre-island which is biggest or equal than minimal CpGisland length 
 4. If sum of C% and G% is biggest than minimal value and Obs/Exp is biggest than minimal value write CpGisland
 
-![alt text](https://raw.githubusercontent.com/alesniewska/Methyl/master/images/obs_exp.jpg?token=AJMQADD5VIOPFDV42N5CCEC5LLF6S)
+![alt text](https://raw.githubusercontent.com/alesniewska/Methyl/master/images/obs_exp.jpg?token=AJMQADH7PEYTDCPQ6JTQUSK5NEWVU)
 
 
 
