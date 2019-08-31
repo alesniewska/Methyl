@@ -51,7 +51,7 @@ sbatch snakemake.sbatch
 
 ## RRBS-seq-snamemake pipeline schema
 
-![alt text](https://github.com/alesniewska/Methyl/blob/master/images/rrbs_shema.jpg?raw=true)
+![alt text](https://github.com/alesniewska/Methyl/blob/master/images/rrbs-schema.jpg?raw=true)
 
 ## Make table count
 
