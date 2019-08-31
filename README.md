@@ -47,11 +47,11 @@ sbatch snakemake.sbatch
 
 ## RNA-seq-snamemake pipeline schema
 
-![alt text](https://raw.githubusercontent.com/alesniewska/Methyl/master/images/rna_shema.jpg?token=AJMQADGUPBMLKQF7UCAUUGC5NEWUM)
+![alt text](https://github.com/alesniewska/Methyl/blob/master/images/rna_shema.jpg?raw=true)
 
 ## RRBS-seq-snamemake pipeline schema
 
-![alt text](https://raw.githubusercontent.com/alesniewska/Methyl/master/images/rrbs-schema.jpg?token=AJMQADGSKTWUJ5JRNMZCU4S5NEWS2)
+![alt text](https://github.com/alesniewska/Methyl/blob/master/images/rrbs_shema.jpg?raw=true)
 
 ## Make table count
 
