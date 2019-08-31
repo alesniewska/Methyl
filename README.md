@@ -87,8 +87,7 @@ CpGislandFind.py <path to FASTA file> <optional arguments>
 3. Select pre-island which is biggest or equal than minimal CpGisland length 
 4. If sum of C% and G% is biggest than minimal value and Obs/Exp is biggest than minimal value write CpGisland
 
-![alt text](https://raw.githubusercontent.com/alesniewska/Methyl/master/images/obs_exp.jpg?token=AJMQADH7PEYTDCPQ6JTQUSK5NEWVU)
-
+![alt text](https://github.com/alesniewska/Methyl/blob/master/images/obs_exp.jpg?raw=true)
 
 
 
